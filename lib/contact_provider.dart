@@ -1,11 +1,9 @@
 import 'package:contact_keeper/contact_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// 1. Notifier
 class ContactNotifier extends Notifier<List<Contact>> {
   @override
   List<Contact> build() {
-    // State awal, bisa diisi data dummy jika perlu
     return []; 
   }
 
@@ -28,7 +26,6 @@ class ContactNotifier extends Notifier<List<Contact>> {
   }
 }
 
-// 2. Provider
 final contactProvider = NotifierProvider<ContactNotifier, List<Contact>>(() {
   return ContactNotifier();
 });

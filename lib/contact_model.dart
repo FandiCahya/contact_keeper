@@ -16,7 +16,6 @@ class Contact {
     required this.tanggalLahir,
   });
 
-  // Getter untuk menghitung umur
   int get umur {
     final now = DateTime.now();
     int age = now.year - tanggalLahir.year;
@@ -27,21 +26,17 @@ class Contact {
     return age;
   }
 
-  // TAMBAHAN: Getter untuk inisial
   String get initials {
     if (nama.isEmpty) return '?';
     final names = nama.trim().split(' ');
     if (names.length > 1 && names.last.isNotEmpty) {
-      // Ambil huruf pertama dari nama pertama dan nama terakhir
       return '${names.first[0]}${names.last[0]}'.toUpperCase();
     } else if (names.first.isNotEmpty) {
-      // Jika hanya satu kata, ambil huruf pertama
       return names.first[0].toUpperCase();
     }
     return '?';
   }
 
-  // copyWith untuk memudahkan proses update (immutable)
   Contact copyWith({
     String? id,
     String? nama,

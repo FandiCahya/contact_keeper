@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class ContactFormPage extends ConsumerStatefulWidget {
-  // Jika contact null, ini adalah mode "Tambah"
-  // Jika contact tidak null, ini adalah mode "Edit"
   final Contact? contact;
 
   const ContactFormPage({super.key, this.contact});
@@ -28,7 +26,6 @@ class _ContactFormPageState extends ConsumerState<ContactFormPage> {
   @override
   void initState() {
     super.initState();
-    // Isi form jika ini adalah mode "Edit"
     _namaController = TextEditingController(text: widget.contact?.nama);
     _teleponController =
         TextEditingController(text: widget.contact?.nomorTelepon);
@@ -44,7 +41,6 @@ class _ContactFormPageState extends ConsumerState<ContactFormPage> {
     super.dispose();
   }
 
-  // Helper untuk menampilkan date picker
   Future<void> _selectDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
@@ -60,14 +56,12 @@ class _ContactFormPageState extends ConsumerState<ContactFormPage> {
   }
 
   void _saveContact() {
-    // Validasi form
     if (_formKey.currentState!.validate() && _tanggalLahir != null) {
       final nama = _namaController.text;
       final telepon = _teleponController.text;
       final alamat = _alamatController.text;
 
       if (_isEditMode) {
-        // Mode Edit: Update kontak
         final updatedContact = widget.contact!.copyWith(
           nama: nama,
           nomorTelepon: telepon,
@@ -76,9 +70,8 @@ class _ContactFormPageState extends ConsumerState<ContactFormPage> {
         );
         ref.read(contactProvider.notifier).updateContact(updatedContact);
       } else {
-        // Mode Tambah: Buat kontak baru
         final newContact = Contact(
-          id: const Uuid().v4(), // Generate ID unik
+          id: const Uuid().v4(),
           nama: nama,
           nomorTelepon: telepon,
           alamat: alamat,
@@ -87,10 +80,8 @@ class _ContactFormPageState extends ConsumerState<ContactFormPage> {
         ref.read(contactProvider.notifier).addContact(newContact);
       }
 
-      // Kembali ke halaman daftar
       Navigator.pop(context);
     } else if (_tanggalLahir == null) {
-      // Tampilkan snackbar jika tanggal belum dipilih
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Harap pilih tanggal lahir.')),
       );
@@ -148,7 +139,6 @@ class _ContactFormPageState extends ConsumerState<ContactFormPage> {
                     (value == null || value.isEmpty) ? 'Alamat tidak boleh kosong' : null,
               ),
               const SizedBox(height: 24),
-              // PERUBAHAN: Tampilan pilih tanggal
               Text(
                 'Tanggal Lahir',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -166,7 +156,6 @@ class _ContactFormPageState extends ConsumerState<ContactFormPage> {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
-                  // PERUBAHAN: Ganti TextButton menjadi OutlinedButton dengan ikon
                   OutlinedButton.icon(
                     icon: const Icon(Icons.calendar_today_outlined, size: 18),
                     label: const Text('Pilih Tanggal'),
